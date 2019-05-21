@@ -45,16 +45,16 @@ main = do
 
     ["select", release]                         -> runWithConfigAndLog (C.select (T.pack release))
 
-    ["proxy-status"]                            -> runWithConfig       (P.showStatus False)
-    ["proxy-status", "--show-slaves"]           -> runWithConfig       (P.showStatus True)
-    ["proxy-deploy", release]                   -> runWithConfigAndLog (P.deploy (T.pack release))
-    ["proxy-undeploy", deploy]                  -> runWithConfigAndLog (P.undeploy (T.pack deploy))
-    ["proxy-connect", endpoint, deploy]         -> runWithConfigAndLog (P.connect (T.pack endpoint) (T.pack deploy))
-    ["proxy-disconnect", endpoint]              -> runWithConfigAndLog (P.disconnect (T.pack endpoint))
-    ["proxy-restart"]                           -> runWithConfigAndLog (P.restartProxy)
-    ["proxy-generate-ssl-certificate"]          -> runWithConfigAndLog (P.generateSslCertificate)
-    ["proxy-slave-update"]                      -> runWithConfigAndLog (P.slaveUpdate Nothing)
-    ["proxy-slave-update", "--repeat", ssecs]  -> do
+    ["status"]                                  -> runWithConfig       (P.showStatus False)
+    ["status", "--show-slaves"]                 -> runWithConfig       (P.showStatus True)
+    ["start", release]                          -> runWithConfigAndLog (P.createAndStart (T.pack release))
+    ["stop", deploy]                            -> runWithConfigAndLog (P.stopAndRemove (T.pack deploy))
+    ["connect", endpoint, deploy]               -> runWithConfigAndLog (P.connect (T.pack endpoint) (T.pack deploy))
+    ["disconnect", endpoint]                    -> runWithConfigAndLog (P.disconnect (T.pack endpoint))
+    ["restart-frontend-proxy"]                  -> runWithConfigAndLog (P.restartProxy)
+    ["generate-ssl-certificate"]                -> runWithConfigAndLog (P.generateSslCertificate)
+    ["slave-update"]                            -> runWithConfigAndLog (P.slaveUpdate Nothing)
+    ["slave-update", "--repeat", ssecs]         -> do
       secs <- readCheck ssecs
       runWithConfigAndLog (P.slaveUpdate (Just secs))
 
